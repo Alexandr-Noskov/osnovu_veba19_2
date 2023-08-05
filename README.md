@@ -1,1 +1,1 @@
-# osnovu_veba19_2
+Проект django_01
