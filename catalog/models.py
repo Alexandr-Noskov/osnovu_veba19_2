@@ -8,7 +8,7 @@ class Category(models.Model):
     description = models.TextField(verbose_name='описание', **NULLABLE)
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name} ({self.description})'
 
     class Meta:
         verbose_name = 'Category'
