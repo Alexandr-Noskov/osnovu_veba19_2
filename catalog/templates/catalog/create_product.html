@@ -1,0 +1,81 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="form-floating">
+    {% csrf_token %}
+    <div class="input-group p-1 pricing-header pb-md-4">
+        <input type="text" class="form-control" name="name" maxlength="50" required id="id_name"
+               placeholder="Наименование">
+    </div>
+
+
+    <div class="input-group p-1 pricing-header pb-md-4">
+        <input type="text" name="description" maxlength="150" required id="id_description" placeholder="Описание">
+    </div>
+    <div class="input-group p-1 pricing-header pb-md-4">
+        <input type="file" name="preview" accept="media/image/" id="id_preview" placeholder="Изображение">
+    </div>
+    <div class="input-group pricing-header pb-md-4">
+        <label for="id_category">Категория:</label>
+        <select name="category" required id="id_category">
+            <option value="" selected>---------</option>
+            {% for object in object_list %}-->
+            <option value="{{ object.id }}">{{ object.name }}</option>
+            {% endfor %}
+
+<!--            <option value="1">название: Ноутбуки описание: Многофункциональное устройство для работы и развлечения-->
+<!--            </option>-->
+
+<!--            <option value="3">название: Портативные колонки описание: Устройство для прослушивания ваших любимых треков-->
+<!--                в хорошем качестве-->
+<!--            </option>-->
+
+<!--            <option value="2">название: Смартфоны описание: Компактное устройсво с огромным функционалом, которое всегда-->
+<!--                под рукой-->
+<!--            </option>-->
+
+        </select>
+    </div>
+    <div class="input-group p-1 pricing-header pb-md-4">
+        <input type="number" name="price" required id="id_price" placeholder="Цена за покупку">
+    </div>
+    <div class="input-group p-1 pricing-header pb-md-4">
+        <input type="text" name="date_creation" required id="id_date_creation" placeholder="Дата создания:">
+    </div>
+    <div class="input-group p-1 pricing-header pb-md-4">
+        <input type="text" name="date_last_change" required id="id_date_last_change"
+               placeholder="Дата последнего изменения:">
+    </div>
+    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
+</form>
+
+<!--    <div class="input-group p-1 pricing-header pb-md-4">-->
+<!--        <input type="text" name="name" class="form-control" id="name" placeholder="Название товара" required>-->
+<!--    </div>-->
+
+<!--    <div class="input-group p-1 pricing-header pb-md-4">-->
+<!--        <label class="input-group-text" for="inputGroupSelect01">Категория</label>-->
+<!--        <select name='category' class="form-select" id="inputGroupSelect01">-->
+<!--            <option selected>...</option>-->
+<!--            {% for object in object_list %}-->
+<!--            <option name='category' value="{{ object.name }}">{{ object.name }}</option>-->
+<!--            {% endfor %}-->
+<!--        </select>-->
+<!--    </div>-->
+<!--    <div class="input-group p-1 pricing-header pb-md-4">-->
+<!--        <input type="text" name="price" class="form-control" id="price" placeholder="Цена" required>-->
+<!--    </div>-->
+
+<!--    <div class="input-group p-1 pricing-header pb-md-4">-->
+<!--        <input type="file" class="form-control" id="image" name="image">-->
+<!--    </div>-->
+
+<!--    <div class="input-group p-1 pricing-header pb-md-4">-->
+<!--        <span class="input-group-text p-3 pricing-header pb-md-4 mx-auto text-center">Добавьте описание</span>-->
+<!--        <textarea class="form-control" aria-label="With textarea" id="description" name="description" required></textarea>-->
+<!--    </div>-->
+<!--    <div class="col-1">-->
+<!--        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>-->
+<!--    </div>-->
+<!--</form>-->
+{% endblock %}
