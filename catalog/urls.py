@@ -2,7 +2,7 @@ from itertools import product
 
 from django.urls import path
 
-from catalog.views import home, contacts, category_product, create_product
+from catalog.views import home, contacts, category_product, create_product, categories
 
 from catalog.apps import CatalogConfig
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('categories/', categories, name='categories'),
     path('category_product/', category_product, name="category_product"),
     path('create_product/', create_product, name='create_product'),
+
 ]
