@@ -2,7 +2,7 @@ from itertools import product
 
 from django.urls import path
 
-from catalog.views import home, contacts, category_product, create_product, categories
+from catalog.views import home, contacts, category_product, create_product, categories, product
 
 from catalog.apps import CatalogConfig
 
