@@ -67,7 +67,13 @@ def create_product(request):
 
 def product(request, pk):
     context = {
-        'object_list': Product.objects.get(id=pk)
+        'object': Product.objects.get(id=pk)
     }
 
     return render(request, 'catalog/product.html', context)
+
+def products(request):
+    context = {
+        'object_list': Product.objects.all()
+    }
+    return render(request, 'catalog/products.html', context)
