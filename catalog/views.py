@@ -76,4 +76,4 @@ def products(request):
     context = {
         'object_list': Product.objects.all()
     }
-    return render(request, 'catalog/products.html', context)
+    return render(request, 'catalog/home.html', context)
