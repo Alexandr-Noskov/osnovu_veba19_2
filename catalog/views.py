@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, DetailView, CreateView
 
 from catalog.forms import ProductForm
-from catalog.models import Category, Product, Version
+from catalog.models import Category, Product
 
 
 def home(request) -> HttpResponse:
