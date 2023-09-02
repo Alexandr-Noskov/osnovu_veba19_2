@@ -3,7 +3,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, UpdateView, DetailView
+from django.views.generic import DeleteView, UpdateView, DetailView, CreateView
 
 from catalog.forms import ProductForm
 from catalog.models import Category, Product, Version
@@ -75,11 +75,6 @@ def product(request, pk):
 
     return render(request, 'catalog/product.html', context)
 
-def products(request):
-    context = {
-        'object_list': Product.objects.all()
-    }
-    return render(request, 'catalog/home.html', context)
 
 class ProductDetailView(DetailView):
     model = Product
@@ -106,4 +101,11 @@ class ProductUpdateView(UpdateView):
 
 class ProductDeleteView(DeleteView):
     model = Product
+    success_url = reverse_lazy('catalog:category_list')
+
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:category_list')

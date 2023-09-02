@@ -1,0 +1,22 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+<style>
+    img {
+        width: 6000px;
+        height: 800;
+    }
+</style>
+<div class="bd-content ps-lg-2">
+
+    <header>
+        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+            <p class="fs-1 text-body-secondary">{{ object.name }}</p>
+            <img src="{{ object.preview | my_media }}"/>
+        </div>
+        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+            <p class="fs-4 text-body-secondary">{{ object.description }}</p>
+        </div>
+    </header>
+</div>
+{% endblock %}
