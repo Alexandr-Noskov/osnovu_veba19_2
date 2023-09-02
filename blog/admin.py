@@ -22,4 +22,3 @@ class ProductAdmin(admin.ModelAdmin):
         return super().form_valid(form)
 
 
-
