@@ -67,7 +67,7 @@
             <h3 class="product-name">{{ object.name }}</h3>
             <p class="product-price">{{ object.price }} руб</p>
             <div class="product-buttons">
-                <a href="#" class="buy-button">Купить</a>
+                <a href="{% url 'catalog:product' object.pk %}" class="buy-button">Купить</a>
                 <a href="{% url 'catalog:product_view' object.pk %}" class="view-button">Посмотреть</a>
                 <a href="{% url 'catalog:product_edit' object.pk %}" class="edit-button">Редактировать</a>
                 <a href="{% url 'catalog:product_delete' object.pk %}" class="delete-button">Удалить</a>

@@ -1,9 +1,12 @@
+
+
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView, UpdateView, DetailView
 
 from catalog.forms import ProductForm
-from catalog.models import Category, Product
-
+from catalog.models import Category, Product, Version
 
 
 def home(request) -> HttpResponse:
@@ -77,3 +80,30 @@ def products(request):
         'object_list': Product.objects.all()
     }
     return render(request, 'catalog/home.html', context)
+
+class ProductDetailView(DetailView):
+    model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        active_version: Version = Version.objects.filter(product=self.object, is_active=True).last()
+        if active_version:
+            context['is_active'] = active_version.is_active
+            context['version'] = active_version.version
+            context['name_version'] = active_version.name_version
+        else:
+            context['version'] = None
+            context['name_version'] = None
+
+        return context
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:category_list')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:category_list')
