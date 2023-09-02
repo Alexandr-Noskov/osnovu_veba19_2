@@ -18,7 +18,6 @@ urlpatterns = [
     path('categories/', categories, name='categories'),
     path('category_product/<int:pk>', category_product, name="category_product"),
     path('create_product/', create_product, name='create_product'),
-    path('product/<int:pk>', product, name='product'),
     path('product/<int:pk>/', product, name='product'),
     path('product/view/<int:pk>', ProductDetailView.as_view(), name='product_view'),
     path('product/edit/<int:pk>', ProductUpdateView.as_view(), name='product_edit'),
