@@ -21,6 +21,8 @@ from django.urls import path, include
 
 from catalog.views import contacts
 
+# Используйте include() чтобы добавлять URL из каталога приложения
+
 urlpatterns = ([
                    path('admin/', admin.site.urls),
                    path('', include('catalog.urls', namespace='catalog')),
