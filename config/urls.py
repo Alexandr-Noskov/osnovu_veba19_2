@@ -24,9 +24,10 @@ from catalog.views import contacts
 # Используйте include() чтобы добавлять URL из каталога приложения
 
 urlpatterns = ([
-                   path('admin/', admin.site.urls),
-                   path('', include('catalog.urls', namespace='catalog')),
-                   path('', include('blog.urls', namespace='blog')),
+                    path('admin/', admin.site.urls),
+                    path('', include('catalog.urls', namespace='catalog')),
+                    path('', include('blog.urls', namespace='blog')),
+                    path('users/', include('users.urls', namespace='users')),
 
                ]
                + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
