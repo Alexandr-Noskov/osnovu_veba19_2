@@ -1,26 +1,15 @@
-from itertools import product
-
 from django.urls import path
-
-from catalog.views import home, contacts, category_product, create_product, categories, product, ProductDetailView, ProductUpdateView, ProductDeleteView
-
 from catalog.apps import CatalogConfig
+from catalog.views import contacts, HomeView, ProductsListView, ProductDetailView, CreateProductView, UpdateProductView, DeleteProductView
 
 app_name = CatalogConfig.name
 
-
-
-
-
 urlpatterns = [
-    path('', home),
-    path('contacts/', contacts, name="contacts"),
-    path('categories/', categories, name='categories'),
-    path('category_product/<int:pk>', category_product, name="category_product"),
-    path('create_product/', create_product, name='create_product'),
-    path('product/<int:pk>/', product, name='product'),
-    path('product/view/<int:pk>', ProductDetailView.as_view(), name='product_view'),
-    path('product/edit/<int:pk>', ProductUpdateView.as_view(), name='product_edit'),
-    path('product/delete/<int:pk>', ProductDeleteView.as_view(), name='product_delete'),
-
+    path('', HomeView.as_view(), name='home'),
+    path('contacts/', contacts, name='contacts'),
+    path('products/', ProductsListView.as_view(), name='products'),
+    path('product/<int:pk>/detail', ProductDetailView.as_view(), name='detail_product'),
+    path('product/<int:pk>/update', UpdateProductView.as_view(), name='update_product'),
+    path('product/<int:pk>/delete', DeleteProductView.as_view(), name='delete_product'),
+    path('create_product/', CreateProductView.as_view(), name='create_product'),
 ]
