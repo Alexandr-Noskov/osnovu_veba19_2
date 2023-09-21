@@ -1,44 +1,49 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from pytils.translit import slugify
-
 from blog.models import Blog
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from pytils.translit import slugify
+from django.core.mail import send_mail
+from decouple import config
 
 
-# Create your views here.
-
-
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
-    fields = ('title', 'body', 'preview',)
-    success_url = reverse_lazy('blog:blog_list')
+    fields = ('title', 'body', 'image', 'is_published')
+    success_url = reverse_lazy('blog:index')
 
     def form_valid(self, form):
-        image = self.request.FILES.get('image')
-        if image:
-            new_blog = form.save(commit=False)
-            new_blog.image = image
-            new_blog.save()
-        else:
-            form.save()
-
         if form.is_valid():
-            new_blog = form.save()
+            new_blog = form.save(commit=False)
             new_blog.slug = slugify(new_blog.title)
             new_blog.save()
 
         return super().form_valid(form)
 
 
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    model = Blog
+    fields = ('title', 'body', 'image', 'is_published')
+
+    def get_success_url(self):
+        return reverse('blog:detail', args=[self.object.slug])
+
+
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
+    model = Blog
+    success_url = reverse_lazy('blog:index')
+
+
 class BlogListView(ListView):
     model = Blog
+    extra_context = {
+        'title': 'Наш блог'
+    }
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(is_published=True)
-
-        return queryset
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['object_list'] = Blog.objects.order_by('-created_at').filter(is_published=True)
+        return context_data
 
 
 class BlogDetailView(DetailView):
@@ -46,29 +51,15 @@ class BlogDetailView(DetailView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        self.object.view_count += 1
-        self.object.save()
+        if self.object:
+            self.object.views_count += 1
+            self.object.save()
+
+            if self.object.views_count == 100:
+                subject = 'Поздравление с достижением 100 просмотров'
+                message = f'Статья "{self.object.title}" достигла 100 просмотров.'
+                from_email = config('EMAIL_HOST_USER')
+                recipient_list = ['denis88lyapin@gmail.com']
+                send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
+
         return self.object
-
-
-class BlogUpdateView(UpdateView):
-    model = Blog
-    fields = ('title', 'body', 'preview',)
-
-    # success_url = reverse_lazy('blog:blog_list')
-
-    def form_valid(self, form):
-        if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.title)
-            new_blog.save()
-
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse('blog:blog_view', args=[self.kwargs.get('pk')])
-
-
-class BlogDeleteView(DeleteView):
-    model = Blog
-    success_url = reverse_lazy('blog:blog_list')
