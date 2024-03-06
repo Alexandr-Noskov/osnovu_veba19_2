@@ -1,4 +1,0 @@
-subject='Поздравление с достижением 100 просмотров'
-list_display=('id', 'title', 'slug', 'date_create', 'view_count',)
-    search_fields=('title', 'body',)
-    list_filter=('date_create',)ll
