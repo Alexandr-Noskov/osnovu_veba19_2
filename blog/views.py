@@ -4,7 +4,7 @@ from blog.models import Blog
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
 from django.core.mail import send_mail
-from decouple import config
+
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
