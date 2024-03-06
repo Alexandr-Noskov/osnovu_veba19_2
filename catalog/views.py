@@ -183,65 +183,65 @@ class DeleteProductView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
 
 
 
-# class UpdateProductView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
-#     model = Product
-#     form_class = ProductForm
-#     template_name = 'catalog/update_product.html'
-#     permission_required = 'catalog.change_product'
-#     success_url = reverse_lazy('catalog:home')
-#     extra_context = {
-#         'title': 'Изменить товар',
-#     }
-#
-#     def test_func(self):
-#         product = self.get_object()
-#         user = self.request.user
-#
-#         if user.is_staff or product.owner == user:
-#             return True
-#
-#         return False
-#
-#     def get_success_url(self):
-#         return reverse('catalog:detail_product', args=[self.object.pk])
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['version_form'] = VersionForm()
-#         return context
-#
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         form = self.get_form()
-#         version_form = VersionForm(request.POST)
-#
-#         if form.is_valid() and version_form.is_valid():
-#             return self.form_valid(form, version_form)
-#         else:
-#             return self.form_invalid(form, version_form)
-#
-#     def form_valid(self, form, version_form):
-#         self.object = form.save()
-#
-#         if self.request.user.is_staff:
-#             # Модератор может отменять публикацию
-#             if self.request.POST.get('cancel_publish'):
-#                 self.object.status = Product.STATUS_MODERATED
-#
-#             # Модератор и владелец могут менять описание и категорию
-#             if self.request.user.has_perm('catalog.change_product_description'):
-#                 self.object.description = form.cleaned_data['description']
-#             if self.request.user.has_perm('catalog.change_product_category'):
-#                 self.object.category = form.cleaned_data['category']
-#
-#             # Владелец может менять все поля, кроме статуса
-#             if self.object.owner == self.request.user:
-#                 self.object.name = form.cleaned_data['name']
-#                 self.object.image = form.cleaned_data['image']
-#                 self.object.price = form.cleaned_data['price']
-#
-#             self.object.save()
-#             return redirect(self.get_success_url())
-#
-#     def form_invalid(self, form, version_form):
-#         return self.render_to_response(self.get_context_data(form=form, version_form=version_form))
+ class UpdateProductView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
+     model = Product
+     form_class = ProductForm
+     template_name = 'catalog/update_product.html'
+     permission_required = 'catalog.change_product'
+     success_url = reverse_lazy('catalog:home')
+     extra_context = {
+         'title': 'Изменить товар',
+     }
+
+     def test_func(self):
+         product = self.get_object()
+         user = self.request.user
+
+         if user.is_staff or product.owner == user:
+             return True
+
+         return False
+
+     def get_success_url(self):
+         return reverse('catalog:detail_product', args=[self.object.pk])
+
+     def get_context_data(self, **kwargs):
+         context = super().get_context_data(**kwargs)
+         context['version_form'] = VersionForm()
+         return context
+
+     def post(self, request, *args, **kwargs):
+         self.object = self.get_object()
+         form = self.get_form()
+         version_form = VersionForm(request.POST)
+
+         if form.is_valid() and version_form.is_valid():
+             return self.form_valid(form, version_form)
+         else:
+             return self.form_invalid(form, version_form)
+
+     def form_valid(self, form, version_form):
+         self.object = form.save()
+
+         if self.request.user.is_staff:
+             # Модератор может отменять публикацию
+             if self.request.POST.get('cancel_publish'):
+                 self.object.status = Product.STATUS_MODERATED
+
+             # Модератор и владелец могут менять описание и категорию
+             if self.request.user.has_perm('catalog.change_product_description'):
+                 self.object.description = form.cleaned_data['description']
+             if self.request.user.has_perm('catalog.change_product_category'):
+                 self.object.category = form.cleaned_data['category']
+
+             # Владелец может менять все поля, кроме статуса
+             if self.object.owner == self.request.user:
+                 self.object.name = form.cleaned_data['name']
+                 self.object.image = form.cleaned_data['image']
+                 self.object.price = form.cleaned_data['price']
+
+             self.object.save()
+             return redirect(self.get_success_url())
+
+     def form_invalid(self, form, version_form):
+         return self.render_to_response(self.get_context_data(form=form, version_form=version_form))
